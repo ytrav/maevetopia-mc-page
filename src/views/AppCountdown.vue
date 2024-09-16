@@ -8,7 +8,8 @@ export default {
                 minutes: 0,
                 seconds: 0
             },
-            displayCountdownTime: '00:00:00:00'
+            displayCountdownTime: '00:00:00:00',
+            // mapUrl: '/api/proxy/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13'
         }
     },
     mounted() {
@@ -91,8 +92,8 @@ export default {
         <div class="form map">
             <h4>World Map</h4>
             <h3>Discover the world of Maevetopia</h3>
-            <iframe src="http://88.99.95.99:21617/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13"
-                frameborder="0"></iframe>
+            <iframe src="/api/proxy/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13" frameborder="0"></iframe>
+
             <div style="margin-top: -15px;" id="faq"></div>
         </div>
 
