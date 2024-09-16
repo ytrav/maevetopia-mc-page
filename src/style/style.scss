@@ -7,19 +7,26 @@
 }
 
 @font-face {
-  font-family: "Minecraft";
-  src: url("../assets/fonts/Minecraft.ttf") format("truetype");
+  font-family: "Mojang";
+  src: url("../assets/fonts/Mojang-Regular.ttf") format("truetype"),
+    url("../assets/fonts/Mojang-Bold.ttf") format("truetype");
+}
+
+::selection {
+  background: #dfbbda4d;
+  color: inherit;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background-image: url("../assets/maeve_3_3.png");
+  background-image: url("../assets/maeve_5.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -32,12 +39,30 @@ body {
 }
 
 header {
-    h2 {
-        font-family: "Minecraft", sans-serif;
-        font-size: 2em;
-        font-weight: 400;
-        letter-spacing: 1px;
+  opacity: 0.9;
+  .anchors {
+    @include v.flex(row, center, center);
+    gap: 10px;
+    a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.2em;
+      font-family: "Mojang", sans-serif;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background 0.1s ease-out;
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
     }
+  }
+  h2 {
+    font-family: "Mojang", sans-serif;
+    // font-size: 1.5em;
+    font-weight: 400;
+    letter-spacing: -2px;
+    word-spacing: 5px;
+  }
   .short {
     display: none;
   }
@@ -51,55 +76,193 @@ header {
   gap: 5px 25px;
   flex-wrap: wrap;
   padding: 15px;
-  backdrop-filter: blur(200px) brightness(0.1) contrast(0.8);
-  -webkit-backdrop-filter: blur(200px) brightness(0.1) contrast(0.8);
+  backdrop-filter: blur(20px) brightness(0.1) contrast(0.8);
+  -webkit-backdrop-filter: blur(20px) brightness(0.1) contrast(0.8);
 
   a {
     color: #fff;
     text-decoration: none;
+    @include v.no-select;
   }
 
   .right-side {
     @include v.flex(column, space-between, flex-end);
     .cta {
-        font-family: "Minecraft", sans-serif;
-        letter-spacing: 1px;
-        @include v.flex(row, center, center);
-        gap: 5px;
-        padding: 10px 10px 8px 10px;
-        border: 1px solid #fff;
-        border-radius: 5px;
-        cursor: pointer;
-        &:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+      font-family: "Mojang", sans-serif;
+      // letter-spacing: -2px;
+      word-spacing: 3px;
+      @include v.flex(row, center, center);
+      gap: 5px;
+      padding: 10px 10px 8px 10px;
+      border: 1px solid #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
     }
   }
 }
 
-
 .page {
-    position: absolute;
-    overflow-y: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0px;
-    padding-top: 200px;
-  
-    @include v.flex(column, flex-start, center);
-    h1 {
-      text-align: center;
-      width: 100%;
-      font-size: 2.7em;
-    }
-  
-    footer {
-      padding: 15px;
-      span {
-        font-size: 1em;
-        color: #00000063;
-      }
+  #top {
+    // put anchor at the top of div
+    position: relative;
+    top: -200px;
+    // transform: translateY(-100px);
+    visibility: hidden;
+  }
+  position: absolute;
+  overflow-y: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0px;
+  padding-top: 200px;
+
+  @include v.flex(column, flex-start, center);
+  h1 {
+    text-align: center;
+    width: 100%;
+  }
+
+  h1,
+  h2 {
+    text-shadow: 0 0 30px #0d3174be;
+  }
+
+  footer {
+    @include v.no-select;
+    padding: 15px;
+    span {
+      font-size: 1em;
+      color: #00000063;
     }
   }
-  
+  .form {
+    &.about img {
+      width: calc(100% + 50px);
+      transform: translateX(-25px);
+      // max-width: 300px;
+      margin: 30px auto 0 auto;
+      @include v.no-drag;
+    }
+    .caption {
+      font-size: 0.9em;
+      word-spacing: 5px;
+      font-family: "Mojang", sans-serif;
+      margin-bottom: 20px;
+      color: #ffffff93;
+      align-self: flex-end;
+      a {
+        text-decoration: none;
+        color: inherit;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    h2 {
+      margin-top: 40px;
+    }
+    h4 {
+      font-family: "Mojang", sans-serif;
+      font-size: 1.5em;
+      word-spacing: 5px;
+    }
+    &:nth-child(4) {
+      margin-top: 30vh;
+      padding: 50px 25px;
+    }
+    margin-top: 100px;
+
+    backdrop-filter: blur(100px) brightness(0.6);
+    -webkit-backdrop-filter: blur(40px) brightness(0.6);
+    @include v.flex(column, flex-start, center);
+    width: calc(100% - 40px);
+    border-radius: 25px;
+    padding: 25px;
+    max-width: 900px;
+    gap: 15px;
+
+    iframe {
+      opacity: 9;
+      width: 100%;
+      max-width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 20px;
+    }
+    .discord-button {
+      @include v.flex(row, center, center);
+      img {
+        height: 35px;
+        width: auto;
+        margin-right: 10px;
+        @include v.no-drag;
+      }
+      text-align: center;
+      text-decoration: none;
+      background-color: #5865f2;
+      margin-bottom: 50px;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 15px 25px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: transform 0.1s ease-out;
+      &:hover {
+        transform: scale(1.05);
+      }
+      &:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+      }
+    }
+
+    .timer {
+      @include v.flex(row, center, center);
+      font-size: 1.5em;
+      font-family: "Mojang", sans-serif;
+      color: #fff;
+      text-shadow: 0 0 10px #00000063;
+      .digit-block {
+        @include v.flex(row, center, center);
+      }
+      .colon {
+        font-size: 0.5em;
+        margin: 0 5px;
+        color: #ffffff93;
+      }
+      // .digit {
+      //   position: relative;
+      //   span {
+      //     // position: absolute;
+      //     // top
+      //     // top: 0;
+      //     // left: 0;
+      //     // opacity: 0;
+      //   }
+      // }
+    }
+    .timer-enter-from {
+      opacity: 0;
+      transform: translateY(-25px);
+    }
+    .timer-leave-to {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    .timer-leave-active {
+      span {
+        position: absolute;
+      }
+    }
+    
+    .timer-enter-active,
+    .timer-leave-active {
+      transition: opacity 0.4s, transform 0.5s;
+    }
+  }
+}

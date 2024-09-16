@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import './style/style.scss'
+import './style/viewports.scss'
 import App from './App.vue'
 import router from './router'
 import VWave from 'v-wave'
