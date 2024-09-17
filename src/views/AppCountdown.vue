@@ -92,7 +92,7 @@ export default {
         <div class="form map">
             <h4>World Map</h4>
             <h3>Discover the world of Maevetopia</h3>
-            <iframe src="/api/proxy/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13" frameborder="0"></iframe>
+            <iframe src="/api/proxy" frameborder="0"></iframe>
 
             <div style="margin-top: -15px;" id="faq"></div>
         </div>
