@@ -42,7 +42,7 @@ export default async function handler(req, res) {
   // Check if the request is for static assets like images, CSS, or JS
   if (url.startsWith('/api/images') || url.startsWith('/api/js') || url.startsWith('/api/css') || url.startsWith('/api/standalone')) {
     const assetUrl = `http://88.99.95.99:21617${url.replace('/api', '')}`;
-
+    
     const response = await fetch(assetUrl);
 
     if (response.ok) {
@@ -55,14 +55,35 @@ export default async function handler(req, res) {
       res.status(404).send('Resource not found');
     }
   } else {
-    // Main HTML content
+    // Fetch the main HTML content
     const response = await fetch('http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13');
     let html = await response.text();
 
-    // Rewrite relative URLs for JS, CSS, and Images to go through the proxy
+    // Manually rewrite the asset URLs to point directly to the proxied paths
     html = html
       .replace(/(href|src)="(js|css|images|standalone)\/([^"]+)"/g, '$1="/api/$2/$3"')
-      .replace(/(href|src)="images\/([^"]+)"/g, '$1="/api/images/$2"'); // Specific rule for images/icons
+      .replace(/"images\/icons\/apple-touch-icon.png"/g, '"http://88.99.95.99:21617/images/icons/apple-touch-icon.png"')
+      .replace(/"images\/icons\/favicon-32x32.png"/g, '"http://88.99.95.99:21617/images/icons/favicon-32x32.png"')
+      .replace(/"images\/icons\/favicon-16x16.png"/g, '"http://88.99.95.99:21617/images/icons/favicon-16x16.png"')
+      .replace(/"images\/icons\/site.webmanifest"/g, '"http://88.99.95.99:21617/images/icons/site.webmanifest"')
+      .replace(/"images\/icons\/safari-pinned-tab.svg"/g, '"http://88.99.95.99:21617/images/icons/safari-pinned-tab.svg"')
+      .replace(/"images\/icons\/favicon.ico"/g, '"http://88.99.95.99:21617/images/icons/favicon.ico"')
+      .replace(/"images\/icons\/browserconfig.xml"/g, '"http://88.99.95.99:21617/images/icons/browserconfig.xml"')
+      .replace(/"js\/jquery-3.5.1.js"/g, '"http://88.99.95.99:21617/js/jquery-3.5.1.js"')
+      .replace(/"js\/leaflet.js"/g, '"http://88.99.95.99:21617/js/leaflet.js"')
+      .replace(/"js\/custommarker.js"/g, '"http://88.99.95.99:21617/js/custommarker.js"')
+      .replace(/"js\/dynmaputils.js"/g, '"http://88.99.95.99:21617/js/dynmaputils.js"')
+      .replace(/"js\/sidebarutils.js"/g, '"http://88.99.95.99:21617/js/sidebarutils.js"')
+      .replace(/"js\/jquery.json.js"/g, '"http://88.99.95.99:21617/js/jquery.json.js"')
+      .replace(/"js\/jquery.mousewheel.js"/g, '"http://88.99.95.99:21617/js/jquery.mousewheel.js"')
+      .replace(/"js\/minecraft.js"/g, '"http://88.99.95.99:21617/js/minecraft.js"')
+      .replace(/"js\/hdmap.js"/g, '"http://88.99.95.99:21617/js/hdmap.js"')
+      .replace(/"js\/map.js"/g, '"http://88.99.95.99:21617/js/map.js"')
+      .replace(/"css\/leaflet.css"/g, '"http://88.99.95.99:21617/css/leaflet.css"')
+      .replace(/"css\/standalone.css"/g, '"http://88.99.95.99:21617/css/standalone.css"')
+      .replace(/"css\/dynmap_style.css"/g, '"http://88.99.95.99:21617/css/dynmap_style.css"')
+      .replace(/"version.js"/g, '"http://88.99.95.99:21617/version.js"')
+      .replace(/"standalone\/config.js"/g, '"http://88.99.95.99:21617/standalone/config.js"');
 
     res.setHeader('Content-Type', 'text/html');
     res.status(200).send(html);
