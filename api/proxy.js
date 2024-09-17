@@ -40,9 +40,9 @@ export default async function handler(req, res) {
   const { url } = req;
 
   // Check if the request is for static assets like images, CSS, or JS
-  if (url.startsWith('/api/images') || url.startsWith('/api/js') || url.startsWith('/api/css')) {
+  if (url.startsWith('/api/images') || url.startsWith('/api/js') || url.startsWith('/api/css') || url.startsWith('/api/standalone')) {
     const assetUrl = `http://88.99.95.99:21617${url.replace('/api', '')}`;
-    
+
     const response = await fetch(assetUrl);
 
     if (response.ok) {
@@ -59,9 +59,9 @@ export default async function handler(req, res) {
     const response = await fetch('http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13');
     let html = await response.text();
 
-    // Rewrite relative URLs to go through the proxy
+    // Rewrite relative URLs for JS, CSS, and Images to go through the proxy
     html = html
-      .replace(/(href|src)="\/(js|css|images|standalone)\/([^"]+)"/g, '$1="/api/$2/$3"')
+      .replace(/(href|src)="(js|css|images|standalone)\/([^"]+)"/g, '$1="/api/$2/$3"')
       .replace(/(href|src)="images\/([^"]+)"/g, '$1="/api/images/$2"'); // Specific rule for images/icons
 
     res.setHeader('Content-Type', 'text/html');
