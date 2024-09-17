@@ -92,7 +92,8 @@ export default {
         <div class="form map">
             <h4>World Map</h4>
             <h3>Discover the world of Maevetopia</h3>
-            <iframe src="/api/proxy" frameborder="0"></iframe>
+            <!-- <iframe src="http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13" frameborder="0"></iframe> -->
+             <p>This section is still under construction and will open soon!</p>
 
             <div style="margin-top: -15px;" id="faq"></div>
         </div>
@@ -118,6 +119,7 @@ export default {
 
         <footer>
             <span>developed by maeve, property of maevetopian government</span>
+            <span>v1.0.0</span>
         </footer>
     </div>
 </template>
