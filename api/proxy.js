@@ -37,12 +37,34 @@
 
 
 export default async function handler(req, res) {
-  const response = await fetch('http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13');
-  let html = await response.text();
+  const { url } = req;
 
-  // Rewrite relative URLs to point to the correct server
-  html = html.replace(/(href|src)="\/([^"]+)"/g, '$1="http://88.99.95.99:21617/$2"');
+  // Check if the request is for static assets like images, CSS, or JS
+  if (url.startsWith('/api/images') || url.startsWith('/api/js') || url.startsWith('/api/css')) {
+    const assetUrl = `http://88.99.95.99:21617${url.replace('/api', '')}`;
+    
+    const response = await fetch(assetUrl);
 
-  res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(html);
+    if (response.ok) {
+      const buffer = await response.arrayBuffer();
+      
+      // Set appropriate content type headers
+      res.setHeader('Content-Type', response.headers.get('content-type'));
+      res.status(200).send(Buffer.from(buffer));
+    } else {
+      res.status(404).send('Resource not found');
+    }
+  } else {
+    // Main HTML content
+    const response = await fetch('http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13');
+    let html = await response.text();
+
+    // Rewrite relative URLs to go through the proxy
+    html = html
+      .replace(/(href|src)="\/(js|css|images|standalone)\/([^"]+)"/g, '$1="/api/$2/$3"')
+      .replace(/(href|src)="images\/([^"]+)"/g, '$1="/api/images/$2"'); // Specific rule for images/icons
+
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).send(html);
+  }
 }
