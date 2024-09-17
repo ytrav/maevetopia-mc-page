@@ -37,9 +37,12 @@
 
 
 export default async function handler(req, res) {
-  const response = await fetch('http://88.99.95.99:21617/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13');
-  const data = await response.text();
+  const response = await fetch('http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13');
+  let html = await response.text();
+
+  // Rewrite relative URLs to point to the correct server
+  html = html.replace(/(href|src)="\/([^"]+)"/g, '$1="http://88.99.95.99:21617/$2"');
 
   res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(data);
+  res.status(200).send(html);
 }
