@@ -133,6 +133,7 @@ header {
 
   footer {
     @include v.no-select;
+    @include v.flex(column, center, center);
     padding: 15px;
     span {
       font-size: 1em;
