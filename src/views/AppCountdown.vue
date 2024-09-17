@@ -9,6 +9,10 @@ export default {
                 seconds: 0
             },
             displayCountdownTime: '00:00:00:00',
+            parallaxStyle: {
+                backgroundPosition: '50% 50%',
+                transition: 'background-position 0.1s'
+            },
             // mapUrl: '/api/proxy/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13'
         }
     },
@@ -34,7 +38,30 @@ export default {
             this.countdown.seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             this.displayCountdownTime = `${this.countdown.days.toString().padStart(2, '0')}:${this.countdown.hours.toString().padStart(2, '0')}:${this.countdown.minutes.toString().padStart(2, '0')}:${this.countdown.seconds.toString().padStart(2, '0')}`;
-        }
+        },
+        parallaxEffect(e) {
+      const target = e.target;
+      const rect = target.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const xPercent = (x / rect.width) * 100;
+      const yPercent = (y / rect.height) * 100;
+
+      // Update position without transition
+      this.parallaxStyle = {
+        backgroundPosition: `${xPercent}% ${yPercent}%`,
+        transition: 'none', // Disable transition during mouse movement
+        backgroundSize: '110%', // Apply zoom on hover
+      };
+    },
+    resetParallax() {
+      // Smooth reset
+      this.parallaxStyle = {
+        backgroundPosition: '50% 50%',
+        transition: 'background-position 0.5s ease-out, background-size 0.5s ease-out', // Smooth transition for reset
+        backgroundSize: 'cover', // Reset zoom
+      };
+    },
     }
 }
 
@@ -93,8 +120,28 @@ export default {
             <h4>World Map</h4>
             <h3>Discover the world of Maevetopia</h3>
             <!-- <iframe src="http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13" frameborder="0"></iframe> -->
-             <p>This section is still under construction and will open soon!</p>
-
+            <a @mousemove="parallaxEffect" @mouseleave="resetParallax" :style="parallaxStyle"
+                href="http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13"
+                target="_blank" v-wave="{
+                    duration: 0.4,
+                    color: '#606c38',
+                    initialOpacity: 0.2,
+                    easing: 'ease-out'
+                }">
+                <!-- <img src="/map.png" alt="Map"> -->
+            </a>
+            <a v-wave="{
+                duration: 0.2,
+                color: '#606c38',
+                initialOpacity: 0.4,
+                easing: 'ease-out'
+            }" href="http://88.99.95.99:21617?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13"><span
+                    class="caption">Click the map to open</span><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24">
+                    <title>open-in-new</title>
+                    <path
+                        d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />
+                </svg></a>
             <div style="margin-top: -15px;" id="faq"></div>
         </div>
 
@@ -119,7 +166,7 @@ export default {
 
         <footer>
             <span>developed by maeve, property of maevetopian government</span>
-            <span>v1.0.0</span>
+            <span>v1.1.0 - Map update</span>
         </footer>
     </div>
 </template>

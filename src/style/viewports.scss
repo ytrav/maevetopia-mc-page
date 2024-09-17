@@ -13,3 +13,11 @@
     }
     
 }
+
+
+@media screen and (max-width: 590px) {
+    .form.map a:nth-child(3) {
+        background-position: 50% 50% !important;
+        background-size: cover !important;
+    }
+}
