@@ -1,6 +1,11 @@
 <script>
+import { mapStores } from 'pinia';
+import { useVarStore } from '../stores/VarStore';
 
 export default {
+    computed: {
+        ...mapStores(useVarStore)
+    },
     data() {
         return {
             anchors: [
@@ -15,7 +20,7 @@ export default {
 </script>
 
 <template>
-    <header>
+    <header :class="{bg: varStore.scrolled}">
         <a href="#top">
             <h2>Maevetopian Settlement</h2>
             <h2 class="short">MS</h2>

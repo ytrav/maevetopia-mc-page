@@ -1,5 +1,11 @@
 <script>
+import { mapStores } from 'pinia';
+import { useVarStore } from '../stores/VarStore';
+
 export default {
+    computed: {
+        ...mapStores(useVarStore)
+    },
     data() {
         return {
             countdown: {
@@ -11,8 +17,30 @@ export default {
             displayCountdownTime: '00:00:00:00',
             parallaxStyle: {
                 backgroundPosition: '50% 50%',
-                transition: 'background-position 0.1s'
+                transition: 'background-size 0.1s, background-position 0.1s',
             },
+            faq: [
+                {
+                    question: "What version is the server on?",
+                    answer: "The server is running on Minecraft JE version 1.21.1, the latest stable release - we might migrate to future versions if there is a need for that.<br><br>The server also supports Bedrock connections, make sure to use the latest version available to connect from your mobile device or console!",
+                    open: false
+                },
+                {
+                    question: "Is it Java or Bedrock?",
+                    answer: "As mentioned above, the server is running on Java but supports connections from Bedrock players as well - when connecting you will be prompted to connect your Microsoft account, and you will play as your Java profile.<br><br>This also allows you to connect to your Java profile from your mobile device or console when you're not at your PC.",
+                    open: false
+                },
+                {
+                    question: "How to join Maevetopia?",
+                    answer: "The server will open for everyone this Saturday, September 21st at 12:00 UTC. You can join by connecting to the server address: <code>mc.maevetopia.fun</code> using your Minecraft client. The port is default and doesn't need to be specified.<br><br>Although the server is not whitelisted, it is recommended you join our <a href=\"#discord\">Discord Server</a> and meet other Settlers and Citizens before you embark on your adventure on Maevetopia!",
+                    open: false
+                },
+                {
+                    question: "How to join from Bedrock?",
+                    answer: "Joining from Bedrock is simple! Just open Minecraft, and add the server with the address: <code>mc.maevetopia.fun</code> and the port: <code>21866</code> you will be prompted to connect your Microsoft account, and you will play as your Java profile.<br><br>Although the server is not whitelisted, it is recommended you join our <a href=\"#discord\">Discord Server</a> and meet other Settlers and Citizens before you embark on your adventure on Maevetopia!",
+                    open: false
+                }
+            ]
             // mapUrl: '/api/proxy/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13'
         }
     },
@@ -25,6 +53,9 @@ export default {
                 router.reload();
             }
         }, 1000);
+        this.$refs.page.addEventListener('scroll', this.handleScroll);
+        this.handleScroll()
+
     },
     methods: {
         updateCountdown() {
@@ -40,35 +71,43 @@ export default {
             this.displayCountdownTime = `${this.countdown.days.toString().padStart(2, '0')}:${this.countdown.hours.toString().padStart(2, '0')}:${this.countdown.minutes.toString().padStart(2, '0')}:${this.countdown.seconds.toString().padStart(2, '0')}`;
         },
         parallaxEffect(e) {
-      const target = e.target;
-      const rect = target.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const xPercent = (x / rect.width) * 100;
-      const yPercent = (y / rect.height) * 100;
+            const target = e.target;
+            const rect = target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xPercent = (x / rect.width) * 100;
+            const yPercent = (y / rect.height) * 100;
 
-      // Update position without transition
-      this.parallaxStyle = {
-        backgroundPosition: `${xPercent}% ${yPercent}%`,
-        transition: 'none', // Disable transition during mouse movement
-        backgroundSize: '110%', // Apply zoom on hover
-      };
-    },
-    resetParallax() {
-      // Smooth reset
-      this.parallaxStyle = {
-        backgroundPosition: '50% 50%',
-        transition: 'background-position 0.5s ease-out, background-size 0.5s ease-out', // Smooth transition for reset
-        backgroundSize: 'cover', // Reset zoom
-      };
-    },
+            // Update position without transition
+            this.parallaxStyle = {
+                backgroundPosition: `${xPercent}% ${yPercent}%`,
+                // transition: 'background-size 0.2s ease-out', // Disable transition during mouse movement
+                backgroundSize: '110%', // Apply zoom on hover
+            };
+        },
+        resetParallax() {
+            // Smooth reset
+            this.parallaxStyle = {
+                backgroundPosition: '50% 50%',
+                transition: 'background-position 0.5s ease-out, background-size 0.5s ease-out', // Smooth transition for reset
+                backgroundSize: '100%', // Reset zoom
+            };
+        },
+        handleScroll() {
+            let st = this.$refs.page.scrollTop;
+            if (st > 100) {
+                this.varStore.setScrolled(true);
+            } else {
+                this.varStore.setScrolled(false);
+            }
+        }
     }
 }
 
 </script>
 
 <template>
-    <div class="page countdown">
+    <div class="page countdown" ref="page">
         <div id="top"></div>
         <h1>The Official Server of Maevetopia!</h1>
         <h2>is almost here</h2>
@@ -147,7 +186,15 @@ export default {
 
         <div class="form faq">
             <h4>Frequently Asked Questions</h4>
-            <p>This section is still under construction, please check back later!</p>
+            <div class="question" v-for="(question, index) in faq" :key="index" :class="{ open: question.open }">
+                <h3 v-wave="{
+                    duration: 0.2,
+                    color: 'currentColor',
+                    initialOpacity: 0.2,
+                    easing: 'ease-out'
+                }" @click="faq[index].open = !faq[index].open">{{ question.question }}</h3>
+                <p class="answer" v-html="question.answer"></p>
+            </div>
         </div>
 
         <div class="form discord" id="discord">
@@ -166,7 +213,7 @@ export default {
 
         <footer>
             <span>developed by maeve, property of maevetopian government</span>
-            <span>v1.1.0 - Map update</span>
+            <span>v1.2.0 - FAQ and Design Update</span>
         </footer>
     </div>
 </template>
