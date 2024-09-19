@@ -214,7 +214,7 @@ export default {
 
         <footer>
             <span>developed by maeve, property of maevetopian government</span>
-            <span>v1.2.1 - FAQ and Design Update, Minor improvements</span>
+            <span>v1.2.2 - FAQ and Design Update, Minor improvements</span>
         </footer>
     </div>
 </template>
