@@ -195,6 +195,7 @@ export default {
                 }" @click="faq[index].open = !faq[index].open">{{ question.question }}</h3>
                 <p class="answer" v-html="question.answer"></p>
             </div>
+            <span class="caption">Still have questions? Join our Discord Server and I will assist you in all matters you might have, including joining the Server from Bedrock on console!</span>
         </div>
 
         <div class="form discord" id="discord">
@@ -213,7 +214,7 @@ export default {
 
         <footer>
             <span>developed by maeve, property of maevetopian government</span>
-            <span>v1.2.0 - FAQ and Design Update</span>
+            <span>v1.2.1 - FAQ and Design Update, Minor improvements</span>
         </footer>
     </div>
 </template>
