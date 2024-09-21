@@ -2,12 +2,17 @@
 import { mapStores } from 'pinia';
 import { useVarStore } from '../stores/VarStore';
 
+
 export default {
+    components: {
+        
+    },
     computed: {
         ...mapStores(useVarStore)
     },
     data() {
         return {
+            isBefore: false,
             countdown: {
                 days: 0,
                 hours: 0,
@@ -32,7 +37,7 @@ export default {
                 },
                 {
                     question: "How to join Maevetopia?",
-                    answer: "The server will open for everyone this Saturday, September 21st at 12:00 UTC. You can join by connecting to the server address: <code>mc.maevetopia.fun</code> using your Minecraft client. The port is default and doesn't need to be specified.<br><br>Although the server is not whitelisted, it is recommended you join our <a href=\"#discord\">Discord Server</a> and meet other Settlers and Citizens before you embark on your adventure on Maevetopia!",
+                    answer: "You can join by connecting to the server address: <code>mc.maevetopia.fun</code> using your Minecraft client. The port is default and doesn't need to be specified.<br><br>Although the server is not whitelisted, it is recommended you join our <a href=\"#discord\">Discord Server</a> and meet other Settlers and Citizens before you embark on your adventure on Maevetopia!",
                     open: false
                 },
                 {
@@ -40,11 +45,37 @@ export default {
                     answer: "Joining from Bedrock is simple! Just open Minecraft, and add the server with the address: <code>mc.maevetopia.fun</code> and the port: <code>21866</code> you will be prompted to connect your Microsoft account, and you will play as your Java profile.<br><br>Although the server is not whitelisted, it is recommended you join our <a href=\"#discord\">Discord Server</a> and meet other Settlers and Citizens before you embark on your adventure on Maevetopia!",
                     open: false
                 }
+            ],
+            rules: [
+                {
+                    heading: "Respect other Settlers",
+                    content: "I have worked hard to create a great place to have fun and make friends, so please respect others and their creations.<br><br>Any form of harassment, bullying, or discrimination (racism, homophobia, transphobia, sexism) will not be tolerated and will result in a temporary Correctional Facility sentence, and repeated offences will result in a permanent suspension. If you are being harassed, please report it to me, Maeve, immediately."
+                },
+                {
+                    heading: "Cheats, hacks, exploits and overpowered QOL mods are not allowed",
+                    content: "We have an absolute zero-tolerance policy for cheating, hacking, exploiting or using mods that give you an unfair advantage over other players. This includes x-ray texture packs and other exploits.<br><br>Punishments for breaking this rule are severe and will likely result in a permanent suspension."
+                },
+                {
+                    heading: "Griefing, stealing and other malicious activities are illegal",
+                    content: "Ill behaviour such as griefing, stealing, scamming, or any other malicious activities are strictly prohibited. If you have been a victim of such behaviour, please report it to me, Maeve, immediately.<br><br>Breaking this rule will result in a temporary Correctional Facility sentence, and repeated offences will result in a permanent suspension."
+                },
+                {
+                    heading: "Everyone is equal",
+                    content: "Repeatedly asking for special treatment, free items, operator perms or other advantages is not allowed and might result in limiting of your access to chat and voice call features."
+                },
+                {
+                    heading: "Have fun!",
+                    content: "The most important rule of all is to have fun! Maevetopia is a place to relax, make friends, and have a great time. If you have any questions or need help, feel free to ask me, Maeve, or any other Citizen of Maevetopia."
+                }
             ]
             // mapUrl: '/api/proxy/?worldname=maevetopia&mapname=surface&zoom=6&x=-60&y=64&z=-13'
         }
     },
     mounted() {
+        // take timestamp and if it's before 12pm utc on september 21st 2024, return AppCountdown, else return AppHome
+        const before = new Date("2024-09-21T12:00:00Z").getTime();
+        const now = new Date().getTime();
+        this.isBefore = now < before;
         this.updateCountdown();
         setInterval(() => {
             this.updateCountdown();
@@ -107,11 +138,11 @@ export default {
 </script>
 
 <template>
-    <div class="page countdown" ref="page">
+    <div  class="page countdown" ref="page">
         <div id="top"></div>
-        <h1>The Official Server of Maevetopia!</h1>
-        <h2>is almost here</h2>
-        <div class="form">
+        <h1>The Official Server of Maevetopia</h1>
+        <h2>is finally here!</h2>
+        <div v-if="isBefore" class="form">
             <h3>Server will open for Settlement in:</h3>
             <div class="timer" id="about">
                 <span class="digit-block" v-for="(digit, index) in displayCountdownTime.split(':')" :key="index">
@@ -123,8 +154,6 @@ export default {
                     <span class="colon" v-if="index < 3">:</span>
                 </span>
             </div>
-
-
         </div>
 
 
@@ -147,12 +176,41 @@ export default {
             <img src="/screenshot_1.webp" alt="Sunrise in Maevetopia">
             <span class="caption">Screenshot by Maeve <a href="https://twitter.com/ytrav_v"
                     target="_blank">@ytrav_v</a></span>
-            <h3 id="map">Cool screenshots, right?</h3>
-            <p>Well did you know that *your* screenshot could be featured on the Maevetopian Settlement's website?? Yes
+            <h3>Cool screenshots, right?</h3>
+            <p id="pack">Well did you know that *your* screenshot could be featured on the Maevetopian Settlement's
+                website?? Yes
                 yes, it's true!</p>
             <p>Post your coolest screenshots on Twitter with the hashtag #maevetopia for a chance to be featured! It's
                 that cool indeed :3</p>
 
+        </div>
+
+        <div class="form pack">
+            <h4>Resource Pack</h4>
+            <h3>Download the Maevetopia Resource Pack</h3>
+            <p>Exclusively for the Settlers of Maevetopia I have made this optional Resource pack that adds a custom and
+                unique title screen, as well as two new interesting language I added as a little Easter egg, hehe.</p>
+            <a v-wave="{
+                duration: 0.2,
+                color: 'currentColor',
+                initialOpacity: 0.2,
+                easing: 'ease-out'
+            }" href="/maevetopia_pack.zip" download="maevetopia_pack.zip" class="cta">Download the Resource Pack</a>
+            <img src="/screenshot_3.webp"
+                alt="Screenshot of the Minecraft title screen with the Maevetopian Resource pack">
+            <span id="rules" class="caption">Title screen with the Resource pack</span>
+        </div>
+
+        <div class="form rules">
+            <h4>Rules</h4>
+            <h3>The Constitution of Maevetopia</h3>
+            <div class="rule" v-for="(rule, index) in rules" :key="index">
+                <h3>{{ rule.heading }}</h3>
+                <p v-html="rule.content"></p>
+            </div>
+            <span id="map" class="caption">By joining the server you agree to follow these rules and respect the
+                Citizens of
+                Maevetopia</span>
         </div>
 
         <div class="form map">
@@ -195,7 +253,8 @@ export default {
                 }" @click="faq[index].open = !faq[index].open">{{ question.question }}</h3>
                 <p class="answer" v-html="question.answer"></p>
             </div>
-            <span class="caption">Still have questions? Join our Discord Server and I will assist you in all matters you might have, including joining the Server from Bedrock on console!</span>
+            <span class="caption">Still have questions? Join our Discord Server and I will assist you in all matters you
+                might have, including joining the Server from Bedrock on console!</span>
         </div>
 
         <div class="form discord" id="discord">
@@ -214,7 +273,7 @@ export default {
 
         <footer>
             <span>developed by maeve, property of maevetopian government</span>
-            <span>v1.2.2 - FAQ and Design Update, Minor improvements</span>
+            <span>v1.3.2 - Rules, Resource pack and UI update</span>
         </footer>
     </div>
 </template>

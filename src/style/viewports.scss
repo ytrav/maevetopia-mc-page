@@ -1,23 +1,49 @@
 @use "variables.scss" as v;
 
 @media screen and (max-width: 867px) {
-    header {
-        .anchors {
-            a {
-                font-size: 1em;
-            }
-        }
-        h2 {
-            font-size: 1.5em;
-        }
+  header {
+    .anchors {
+      a {
+        font-size: 1em;
+      }
     }
-    
+    h2 {
+      font-size: 1.5em;
+    }
+  }
 }
 
+@media screen and (max-width: 808px) {
+  .form.map a:nth-child(3) {
+    background-position: 50% 50% !important;
+    background-size: cover !important;
+  }
+}
 
-@media screen and (max-width: 590px) {
-    .form.map a:nth-child(3) {
-        background-position: 50% 50% !important;
-        background-size: cover !important;
+@media screen and (max-width: 550px) {
+  header {
+    .menu {
+      display: block;
     }
+    .anchors a {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 463px) {
+  header {
+    h2:nth-child(1) {
+        display: none;
+    }
+    .short {
+        display: block;
+    }
+    .menu {
+      display: block;
+    }
+    .anchors a {
+      display: none;
+    }
+  }
 }
