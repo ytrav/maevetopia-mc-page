@@ -5,7 +5,7 @@ import { useVarStore } from '../stores/VarStore';
 
 export default {
     components: {
-        
+
     },
     computed: {
         ...mapStores(useVarStore)
@@ -138,7 +138,7 @@ export default {
 </script>
 
 <template>
-    <div  class="page countdown" ref="page">
+    <div class="page countdown" ref="page">
         <div id="top"></div>
         <h1>The Official Server of Maevetopia</h1>
         <h2>is finally here!</h2>
@@ -156,7 +156,7 @@ export default {
             </div>
         </div>
 
-
+        <div id="about"></div>
 
         <div class="form about">
             <h3>What is Maevetopia?</h3>
