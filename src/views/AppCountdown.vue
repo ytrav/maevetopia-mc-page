@@ -267,7 +267,7 @@ export default {
                 color: 'currentColor',
                 initialOpacity: 0.2,
                 easing: 'ease-out'
-            }" href="http://discord.maevetopia.fun" class="discord-button"><img src="/discord.png"
+            }" href="https://discord.com/invite/F4xMcVTktx" class="discord-button"><img src="/discord.png"
                     alt="discord logo">Become a Citizen today</a>
         </div>
 
